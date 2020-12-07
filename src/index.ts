@@ -28,7 +28,7 @@ export class Quickbooks {
     private endpoint: string;
     private minorversion: string;
     private oauthversion: string;
-    private refreshToken: string;
+    private refreshToken: string|null;
 
     public static readonly APP_CENTER_BASE = 'https://appcenter.intuit.com';
     public static readonly V3_ENDPOINT_BASE_URL = 'https://sandbox-quickbooks.api.intuit.com/v3/company/';
@@ -81,14 +81,34 @@ export class Quickbooks {
     };
 
 
-    constructor(consumerKey: string|QuickbooksConfiguration, consumerSecret: string, token: string, tokenSecret: string|null, realmId: string, useSandbox: boolean, debug: boolean, minorversion: string, oauthversion: string, refreshToken: string) {
-        const prefix = _.isObject(consumerKey) ? 'consumerKey.': '';
-        this.consumerKey = eval(prefix + 'consumerKey');
-        this.consumerSecret = eval(prefix + 'consumerSecret');
-        this.token = eval(prefix + 'token');
-        this.tokenSecret = eval(prefix + 'tokenSecret');
-        this.realmId = eval(prefix + 'realmId');
-        this.useSandbox = eval(prefix + 'useSandbox');
-        this.debug = eval(prefix + 'debug');
+    constructor(consumerKey: string|QuickbooksConfiguration, consumerSecret: string, token: string, tokenSecret: string|null, realmId: string, useSandbox: boolean, debug: boolean, minorversion: string, oauthversion: string, refreshToken: string|null) {
+        if(typeof consumerKey === 'string') {
+            this.consumerKey = consumerKey;
+            this.consumerSecret = consumerSecret;
+            this.token = token;
+            this.tokenSecret = tokenSecret;
+            this.realmId = realmId;
+            this.useSandbox = useSandbox;
+            this.debug = debug;
+            this.minorversion = minorversion || '4';
+            this.oauthversion = oauthversion || '1.0a';
+            this.refreshToken = refreshToken || null;
+        } else { //Passed in config object instead of params
+            this.consumerKey = consumerKey.consumerKey;
+            this.consumerSecret = consumerKey.consumerSecret;
+            this.token = consumerKey.token;
+            this.tokenSecret = consumerKey.tokenSecret;
+            this.realmId = consumerKey.realmId;
+            this.useSandbox = consumerKey.useSandbox;
+            this.debug = consumerKey.debug;
+            this.minorversion = consumerKey.minorversion || '4';
+            this.oauthversion = consumerKey.oauthversion || '1.0a';
+            this.refreshToken = consumerKey.refreshToken || null;
+        }
+        this.endpoint = this.useSandbox ? Quickbooks.V3_ENDPOINT_BASE_URL : Quickbooks.V3_ENDPOINT_BASE_URL.replace('sandbox-', '');
+
+        if(!this.tokenSecret == null && this.oauthversion !== '2.0') {
+            throw new Error('tokenSecret not defined');
+        }
     }
 }
