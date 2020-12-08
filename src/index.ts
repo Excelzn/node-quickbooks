@@ -1,10 +1,8 @@
 import _ from 'underscore';
-import request from 'request';
 import * as pjson from '../package.json';
 import * as uuid from 'uuid';
 import jxon from 'jxon';
 import util from 'util';
-import debug from 'request-debug';
 import axios from 'axios';
 
 export interface QuickbooksConfiguration {
@@ -65,20 +63,10 @@ export class Quickbooks {
                 USER_INFO_URL: '',
                 REVOKE_URL: ''
             };
-            request({
-                url: discoveryUrl,
-                headers: {
-                    Accept: 'application/json'
-                }
-            }, function (err, res) {
-                if (err) {
-                    console.log(err);
-                    return err;
-                }
-
+            axios.get(discoveryUrl).then(res => {
                 let json;
                 try {
-                    json = JSON.parse(res.body);
+                    json = JSON.parse(res.data);
                 } catch (error) {
                     console.log(error);
                     return error;
@@ -88,7 +76,10 @@ export class Quickbooks {
                 NEW_ENDPOINT_CONFIGURATION.USER_INFO_URL = json.userinfo_endpoint;
                 NEW_ENDPOINT_CONFIGURATION.REVOKE_URL = json.revocation_endpoint;
                 callback(NEW_ENDPOINT_CONFIGURATION);
-            });
+            }).catch(err => {
+                console.log(err);
+                return err;
+            })
         }
     };
 
@@ -148,16 +139,16 @@ export class Quickbooks {
                 refresh_token: this.refreshToken
             }
         };
-        request.post(postBody, ((e, r, data) => {
-            if (r && r.body) {
-                const refreshResponse = JSON.parse(r.body);
-                this.refreshToken = refreshResponse.refresh_token;
-                this.token = refreshResponse.access_token;
-                if (callback) callback(e, refreshResponse);
-            } else {
-                if (callback) callback(e, r, data);
-            }
-        }));
+        axios.post(postBody.url, postBody.form, {
+            headers: postBody.headers
+        }).then(r => {
+            const refreshResponse = JSON.parse(r.data);
+            this.refreshToken = refreshResponse.refresh_token;
+            this.token = refreshResponse.access_token;
+            if (callback) callback(null, refreshResponse);
+        }).catch(err => {
+            if (callback) callback(err, null, null);
+        })
     }
 
     public revokeAccess(useRefresh: boolean, callback) {
@@ -174,14 +165,17 @@ export class Quickbooks {
                 token: revokeToken
             }
         };
-        request.post(postBody, ((e, r, data) => {
-            if (r && r.statusCode === 200) {
-                this.refreshToken = null;
-                this.token = null;
-                this.realmId = null;
-            }
-            if (callback) callback(e, r, data);
-        }));
+        axios.post(postBody.url, postBody.form, {headers: postBody.headers})
+            .then(r => {
+                if(r.status === 200) {
+                    this.refreshToken = null;
+                    this.token = null;
+                    this.realmId = null;
+                }
+                if (callback) callback(null, r, r.data);
+            }).catch((err) => {
+            if (callback) callback(err, null, null);
+        });
     }
     public getUserInfo(callback) {
         this.request( 'get', {url: Quickbooks.USER_INFO_URL}, null, callback);
@@ -249,16 +243,16 @@ export class Quickbooks {
             opts.formData = options.formData
         }
         if ('production' !== process.env.NODE_ENV && this.debug) {
-            debug(request)
+            axios.interceptors.request.use(request => {
+                console.log('Starting Request', JSON.stringify(request, null, 2));
+                return request;
+            });
+            axios.interceptors.response.use(response => {
+               console.log('Response:', util.inspect(response))
+                return response
+            });
         }
-        axios.interceptors.request.use(request => {
-            console.log('Starting Request', JSON.stringify(request, null, 2));
-            return request;
-        });
-        axios.interceptors.response.use(response => {
-            console.log('Response:', JSON.stringify(response, null, 2))
-            return response
-        });
+
         axios.request({
             method: "POST",
             url: opts.url,
@@ -277,29 +271,9 @@ export class Quickbooks {
                 }
             }
         }).catch(err => {
-            console.log(JSON.stringify(err, null, 2));
+            console.log(err);
             callback(err, err, err);
         });
-        /*
-        request[verb].call(this, opts, (err, res, body) => {
-            if ('production' !== process.env.NODE_ENV && this.debug) {
-                console.log('invoking endpoint: ' + url)
-                console.log(entity || '')
-                console.log(JSON.stringify(body, null, 2));
-            }
-            if (callback) {
-                if (err ||
-                    res.statusCode >= 300 ||
-                    (_.isObject(body) && body.Fault && body.Fault.Error && body.Fault.Error.length) ||
-                    (_.isString(body) && !_.isEmpty(body) && body.indexOf('<') === 0)) {
-                    callback(err || body, body, res)
-                } else {
-                    callback(null, body, res)
-                }
-            }
-        })
-        */
-
     }
 
     private xmlRequest(url: string, rootTag: string, callback) {
