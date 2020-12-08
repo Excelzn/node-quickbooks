@@ -60,7 +60,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Quickbooks = void 0;
 var underscore_1 = __importDefault(require("underscore"));
-var pjson = __importStar(require("../package.json"));
 var uuid = __importStar(require("uuid"));
 var jxon_1 = __importDefault(require("jxon"));
 var util_1 = __importDefault(require("util"));
@@ -233,11 +232,10 @@ var Quickbooks = /** @class */ (function () {
     };
     Quickbooks.prototype.request = function (verb, options, entity) {
         return __awaiter(this, void 0, void 0, function () {
-            var version, url, opts, result, e_1;
+            var url, opts, result, e_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        version = pjson.version;
                         url = this.endpoint + this.realmId + options.url;
                         if (options.url === Quickbooks.RECONNECT_URL || options.url == Quickbooks.DISCONNECT_URL || options.url === Quickbooks.REVOKE_URL || options.url === Quickbooks.USER_INFO_URL) {
                             url = options.url;
@@ -261,7 +259,7 @@ var Quickbooks = /** @class */ (function () {
                         opts.qs.minorversion = opts.qs.minorversion || this.minorversion;
                         opts.qs.format = 'json';
                         //build headers
-                        opts.headers['User-Agent'] = 'node-quickbooks: version ' + version;
+                        //opts.headers['User-Agent'] = 'node-quickbooks: version ' + version
                         opts.headers['Request-Id'] = uuid.v1();
                         if (this.oauthversion == '2.0') {
                             opts.headers['Authorization'] = 'Bearer ' + this.token;

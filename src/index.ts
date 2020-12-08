@@ -1,5 +1,4 @@
 import _ from 'underscore';
-import * as pjson from '../package.json';
 import * as uuid from 'uuid';
 import jxon from 'jxon';
 import util from 'util';
@@ -170,17 +169,51 @@ export class Quickbooks {
         };
         return result.data;
     }
-    public getUserInfo() {
+    public getUserInfo(callback?: (err, data) => void): Promise<any>|void {
+        if(callback != null) {
+            this.request( 'get', {url: Quickbooks.USER_INFO_URL}, null).then(x => {
+                callback(null, x);
+            }).catch(err => {
+                callback(err, null);
+            });
+            return;
+        }
         return this.request( 'get', {url: Quickbooks.USER_INFO_URL}, null);
     }
 
-    public batch(items: Object[]) {
+    public batch(items: Object[], callback?: (err, data) => void): Promise<any>|void {
+        if(callback != null) {
+            this.request( 'post', {url: '/batch'}, {BatchItemRequest: items}).then(x => {
+                callback(null, x);
+            }).catch(e => {
+                callback(e, null);
+            });
+            return;
+        }
         return this.request( 'post', {url: '/batch'}, {BatchItemRequest: items})
     }
-    public reconnect() {
+    public reconnect(callback?: (err, data) => void): Promise<any>|void {
+        if(callback != null) {
+            this.xmlRequest( Quickbooks.RECONNECT_URL ?? '', 'ReconnectResponse')
+                .then(x => {
+                    callback(null, x);
+                }).catch(e => {
+                    callback(e, null);
+                });
+            return;
+        }
         return this.xmlRequest( Quickbooks.RECONNECT_URL ?? '', 'ReconnectResponse');
     }
-    public disconnect() {
+    public disconnect(callback?: (err, data) => void): Promise<any>|void {
+        if(callback != null) {
+            this.xmlRequest( Quickbooks.DISCONNECT_URL ?? '', 'PlatformResponse')
+                .then(x => {
+                    callback(null, x);
+                }).catch(e => {
+                    callback(e, null);
+            });
+            return;
+        }
         return this.xmlRequest( Quickbooks.DISCONNECT_URL ?? '', 'PlatformResponse');
     }
 
@@ -199,7 +232,7 @@ export class Quickbooks {
     }
 
     private async request(verb: Method, options: any, entity: any): Promise<any> {
-        const version = pjson.version;
+       // const version = pjson.version;
         let url = this.endpoint + this.realmId + options.url;
         if (options.url === Quickbooks.RECONNECT_URL || options.url == Quickbooks.DISCONNECT_URL || options.url === Quickbooks.REVOKE_URL || options.url === Quickbooks.USER_INFO_URL) {
             url = options.url
@@ -225,7 +258,7 @@ export class Quickbooks {
         opts.qs.minorversion = opts.qs.minorversion || this.minorversion;
         opts.qs.format = 'json';
         //build headers
-        opts.headers['User-Agent'] = 'node-quickbooks: version ' + version
+        //opts.headers['User-Agent'] = 'node-quickbooks: version ' + version
         opts.headers['Request-Id'] = uuid.v1()
         if (this.oauthversion == '2.0'){
             opts.headers['Authorization'] =  'Bearer ' + this.token
