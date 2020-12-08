@@ -1,0 +1,61 @@
+export interface QuickbooksConfiguration {
+    consumerKey: string;
+    consumerSecret: string;
+    token: string;
+    tokenSecret: string | null;
+    realmId: string;
+    useSandbox: boolean;
+    debug: boolean;
+    endpoint: string;
+    minorversion: string;
+    oauthversion: string;
+    refreshToken: string;
+}
+export declare class Quickbooks {
+    private consumerKey;
+    private consumerSecret;
+    private token;
+    private tokenSecret;
+    private realmId;
+    private useSandbox;
+    private debug;
+    private endpoint;
+    private minorversion;
+    private oauthversion;
+    private refreshToken;
+    static readonly APP_CENTER_BASE = "https://appcenter.intuit.com";
+    static readonly V3_ENDPOINT_BASE_URL = "https://sandbox-quickbooks.api.intuit.com/v3/company/";
+    static readonly QUERY_OPERATORS: string[];
+    static readonly TOKEN_URL = "https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer";
+    static readonly REVOKE_URL = "https://developer.api.intuit.com/v2/oauth2/tokens/revoke";
+    static REQUEST_TOKEN_URL: string | null;
+    static ACCESS_TOKEN_URL: string | null;
+    static APP_CENTER_URL: string | null;
+    static RECONNECT_URL: string | null;
+    static DISCONNECT_URL: string | null;
+    static USER_INFO_URL: string | null;
+    static readonly OAUTH_ENDPOINTS: {
+        '1.0a': (callback: any) => void;
+        '2.0': (callback: any, discoveryUrl: any) => void;
+    };
+    constructor(consumerKey: string | QuickbooksConfiguration, consumerSecret?: string, token?: string, tokenSecret?: string | null, realmId?: string, useSandbox?: boolean, debug?: boolean, minorversion?: string, oauthversion?: string, refreshToken?: string | null);
+    setOauthVersion(version: string | number, useSandbox: boolean): void;
+    refreshAccessToken(): Promise<any>;
+    revokeAccess(useRefresh: boolean): Promise<any>;
+    getUserInfo(): Promise<any>;
+    batch(items: Object[]): Promise<any>;
+    reconnect(): Promise<any>;
+    disconnect(): Promise<any>;
+    createInvoice(invoice: any, callback?: (err: any, data: any) => void): Promise<any> | void;
+    private request;
+    private xmlRequest;
+    private oauth;
+    private unwrap;
+    private capitalize;
+    private pluralize;
+    private create;
+    private read;
+    private update;
+    private delete;
+    private void;
+}

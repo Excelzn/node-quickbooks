@@ -11,7 +11,7 @@ describe("Initialization", () => {
 
 describe("CRUD API", () => {
     describe("INVOICES", () => {
-        it('can create invoice', (done) => {
+        it('can create invoice with promise api', async (done) => {
             const qb = new Quickbooks(config);
             const minimalInvoice = {
                 CustomerRef: {
@@ -30,10 +30,34 @@ describe("CRUD API", () => {
                     }
                 ]
             }
-            qb.createInvoice(minimalInvoice, (err, invoice) => {
+            const invoice = await qb.createInvoice(minimalInvoice);
+            expect(invoice.DocNumber).to.not.be.null;
+            done();
+
+        });
+        it('can create invoice with callback api', (done) => {
+            const qb = new Quickbooks(config);
+            const minimalInvoice = {
+                CustomerRef: {
+                    value: "1"
+                },
+                Line: [
+                    {
+                        DetailType: "SalesItemLineDetail",
+                        Amount: 100.00,
+                        SalesItemLineDetail: {
+                            ItemRef: {
+                                name: "Services",
+                                value: "1"
+                            }
+                        }
+                    }
+                ]
+            }
+            qb.createInvoice(minimalInvoice, ((err, invoice) => {
                 expect(invoice.DocNumber).to.not.be.null;
                 done();
-            })
-        })
+            }));
+        } )
     })
 })

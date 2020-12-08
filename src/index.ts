@@ -3,7 +3,7 @@ import * as pjson from '../package.json';
 import * as uuid from 'uuid';
 import jxon from 'jxon';
 import util from 'util';
-import axios from 'axios';
+import axios, {Method} from 'axios';
 
 export interface QuickbooksConfiguration {
     consumerKey: string;
@@ -125,7 +125,7 @@ export class Quickbooks {
         }, discoveryUrl);
     }
 
-    public refreshAccessToken(callback) {
+    public async refreshAccessToken() {
         const auth = (new Buffer(this.consumerKey + ':' + this.consumerSecret).toString('base64'));
         const postBody = {
             url: Quickbooks.TOKEN_URL,
@@ -139,19 +139,16 @@ export class Quickbooks {
                 refresh_token: this.refreshToken
             }
         };
-        axios.post(postBody.url, postBody.form, {
+        const r = await axios.post(postBody.url, postBody.form, {
             headers: postBody.headers
-        }).then(r => {
-            const refreshResponse = JSON.parse(r.data);
-            this.refreshToken = refreshResponse.refresh_token;
-            this.token = refreshResponse.access_token;
-            if (callback) callback(null, refreshResponse);
-        }).catch(err => {
-            if (callback) callback(err, null, null);
-        })
+        });
+        const refreshResponse = JSON.parse(r.data);
+        this.refreshToken = refreshResponse.refresh_token;
+        this.token = refreshResponse.access_token;
+        return refreshResponse;
     }
 
-    public revokeAccess(useRefresh: boolean, callback) {
+    public async revokeAccess(useRefresh: boolean) {
         const auth = (new Buffer(this.consumerKey + ':' + this.consumerSecret).toString('base64'));
         const revokeToken = useRefresh ? this.refreshToken : this.token;
         const postBody = {
@@ -165,40 +162,43 @@ export class Quickbooks {
                 token: revokeToken
             }
         };
-        axios.post(postBody.url, postBody.form, {headers: postBody.headers})
-            .then(r => {
-                if(r.status === 200) {
-                    this.refreshToken = null;
-                    this.token = null;
-                    this.realmId = null;
-                }
-                if (callback) callback(null, r, r.data);
-            }).catch((err) => {
-            if (callback) callback(err, null, null);
-        });
+        const result = await axios.post(postBody.url, postBody.form, {headers: postBody.headers});
+        if(result.status === 200) {
+            this.refreshToken = null;
+            this.token = null;
+            this.realmId = null;
+        };
+        return result.data;
     }
-    public getUserInfo(callback) {
-        this.request( 'get', {url: Quickbooks.USER_INFO_URL}, null, callback);
+    public getUserInfo() {
+        return this.request( 'get', {url: Quickbooks.USER_INFO_URL}, null);
     }
 
-    public batch(items: Object[], callback) {
-        this.request( 'post', {url: '/batch'}, {BatchItemRequest: items}, callback)
+    public batch(items: Object[]) {
+        return this.request( 'post', {url: '/batch'}, {BatchItemRequest: items})
     }
-    public reconnect(callback) {
-        this.xmlRequest( Quickbooks.RECONNECT_URL ?? '', 'ReconnectResponse', callback);
+    public reconnect() {
+        return this.xmlRequest( Quickbooks.RECONNECT_URL ?? '', 'ReconnectResponse');
     }
-    public disconnect(callback) {
-        this.xmlRequest( Quickbooks.DISCONNECT_URL ?? '', 'PlatformResponse', callback);
+    public disconnect() {
+        return this.xmlRequest( Quickbooks.DISCONNECT_URL ?? '', 'PlatformResponse');
     }
 
     //CRUD endpoints
     //Invoice
-    public createInvoice (invoice, callback) {
-        this.create( 'invoice', invoice, callback);
+    public createInvoice (invoice, callback?: (err, data) => void): Promise<any>|void {
+        if(callback != null) {
+            this.create('invoice', invoice).then(x => {
+                callback(null, x);
+            }).catch(x => {
+                callback(x, null);
+            });
+            return;
+        }
+        return this.create( 'invoice', invoice);
     }
 
-
-    private request(verb: string, options: any, entity: any, callback) {
+    private async request(verb: Method, options: any, entity: any): Promise<any> {
         const version = pjson.version;
         let url = this.endpoint + this.realmId + options.url;
         if (options.url === Quickbooks.RECONNECT_URL || options.url == Quickbooks.DISCONNECT_URL || options.url === Quickbooks.REVOKE_URL || options.url === Quickbooks.USER_INFO_URL) {
@@ -253,37 +253,31 @@ export class Quickbooks {
             });
         }
 
-        axios.request({
-            method: "POST",
-            url: opts.url,
-            headers: opts.headers,
-            params: opts.qs,
-            data: opts.body,
-        }).then(x => {
-            if(callback) {
-                if (
-                    x.status >= 300 ||
-                    (_.isObject(x.data) && x.data.Fault && x.data.Fault.Error && x.data.Fault.Error.length) ||
-                    (_.isString(x.data) && !_.isEmpty(x.data) && x.data.indexOf('<') === 0)) {
-                    callback(x.data, x.data, x)
-                } else {
-                    callback(null, x.data, x)
-                }
-            }
-        }).catch(err => {
-            console.log(err);
-            callback(err, err, err);
-        });
+        try{
+            const result = await axios.request({
+                method: verb,
+                url: opts.url,
+                headers: opts.headers,
+                params: opts.qs,
+                data: opts.body,
+            })
+            return result.data;
+        }
+        catch (e) {
+            console.log(e);
+            return e;
+        }
     }
 
-    private xmlRequest(url: string, rootTag: string, callback) {
-        this.request( 'get', {url:url}, null, (err, body) => {
-            const json =
-                body.constructor === {}.constructor ? body :
-                    (body.constructor === "".constructor ?
-                        (body.indexOf('<') === 0 ? jxon.stringToJs(body)[rootTag] : body) : body);
-            callback(json.ErrorCode === 0 ? null : json, json);
-        })
+    private async xmlRequest(url: string, rootTag: string) {
+       try {
+           const body = await this.request( 'get', {url:url}, null);
+           return body.constructor === {}.constructor ? body :
+               (body.constructor === "".constructor ?
+                   (body.indexOf('<') === 0 ? jxon.stringToJs(body)[rootTag] : body) : body);
+       } catch (e) {
+           return e;
+       }
     }
     private oauth() {
         return {
@@ -294,16 +288,9 @@ export class Quickbooks {
         }
     }
 
-    private unwrap(callback, entityName) {
-        if (! callback) return (err, data) => {}
-        return (err, data) => {
-            if (err) {
-                if (callback) callback(err)
-            } else {
-                const name = this.capitalize(entityName)
-                if (callback) callback(err, (data || {})[name] || data)
-            }
-        }
+    private unwrap(data, entityName): any {
+        const name = this.capitalize(entityName);
+        return (data || {})[name];
     }
     private capitalize(s: string): string {
         return s.substring(0, 1).toUpperCase() + s.substring(1)
@@ -320,16 +307,18 @@ export class Quickbooks {
         }
     }
 
-    private create(entityName: string, entity: any, callback) {
+    private async create(entityName: string, entity: any) {
         const url = '/' + entityName.toLowerCase()
-        this.request( 'post', {url: url}, entity, this.unwrap(callback, entityName))
+        const data = await this.request( 'post', {url: url}, entity);
+        return this.unwrap(data, entityName);
     }
-    private read(entityName: string, id: string, callback) {
+    private async read(entityName: string, id: string) {
         let url = '/' + entityName.toLowerCase()
         if (id) url = url + '/' + id
-        this.request( 'get', {url: url}, null, this.unwrap(callback, entityName))
+        const data = await this.request( 'get', {url: url}, null);
+        return this.unwrap(data, entityName);
     }
-    private update(entityName: string, entity: any, callback) {
+    private async update(entityName: string, entity: any) {
         if (_.isUndefined(entity.Id) ||
             _.isEmpty(entity.Id + '') ||
             _.isUndefined(entity.SyncToken) ||
@@ -348,36 +337,25 @@ export class Quickbooks {
             opts.qs = { include: 'void' }
             delete entity.void
         }
-        this.request( 'post', opts, entity, this.unwrap(callback, entityName))
+        const data = await this.request( 'post', opts, entity);
+        return this.unwrap(data, entityName);
     }
-    private delete(entityName: string, idOrEntity: string|any, callback) {
+    private async delete(entityName: string, idOrEntity: string|any) {
         const url = '/' + entityName.toLowerCase() + '?operation=delete'
-        callback = callback || function() {}
         if (_.isObject(idOrEntity)) {
-            this.request( 'post', {url: url}, idOrEntity, callback)
+            return await this.request( 'post', {url: url}, idOrEntity);
         } else {
-            this.read( entityName, idOrEntity, (err, entity) => {
-                if (err) {
-                    callback(err)
-                } else {
-                    this.request('post', {url: url}, entity, callback)
-                }
-            })
+            const entity = await this.read( entityName, idOrEntity);
+            return await this.request('post', {url: url}, entity);
         }
     }
-    private void(entityName: string, idOrEntity: string|any, callback) {
+    private async void(entityName: string, idOrEntity: string|any, callback) {
         const url = '/' + entityName.toLowerCase() + '?operation=void'
-        callback = callback || function () { }
         if (_.isObject(idOrEntity)) {
-            this.request( 'post', { url: url }, idOrEntity, callback)
+            return this.request( 'post', { url: url }, idOrEntity)
         } else {
-            this.read(entityName, idOrEntity, (err, entity) => {
-                if (err) {
-                    callback(err)
-                } else {
-                    this.request( 'post', { url: url }, entity, callback)
-                }
-            })
+            const entity = await this.read(entityName, idOrEntity);
+            return this.request( 'post', { url: url }, entity)
         }
     }
 }
