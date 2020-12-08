@@ -11,7 +11,7 @@ describe("Initialization", () => {
 
 describe("CRUD API", () => {
     describe("INVOICES", () => {
-        it('can create invoice', () => {
+        it('can create invoice', (done) => {
             const qb = new Quickbooks(config);
             const minimalInvoice = {
                 CustomerRef: {
@@ -32,6 +32,7 @@ describe("CRUD API", () => {
             }
             qb.createInvoice(minimalInvoice, (err, invoice) => {
                 expect(invoice.DocNumber).to.not.be.null;
+                done();
             })
         })
     })

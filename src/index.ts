@@ -251,6 +251,36 @@ export class Quickbooks {
         if ('production' !== process.env.NODE_ENV && this.debug) {
             debug(request)
         }
+        axios.interceptors.request.use(request => {
+            console.log('Starting Request', JSON.stringify(request, null, 2));
+            return request;
+        });
+        axios.interceptors.response.use(response => {
+            console.log('Response:', JSON.stringify(response, null, 2))
+            return response
+        });
+        axios.request({
+            method: "POST",
+            url: opts.url,
+            headers: opts.headers,
+            params: opts.qs,
+            data: opts.body,
+        }).then(x => {
+            if(callback) {
+                if (
+                    x.status >= 300 ||
+                    (_.isObject(x.data) && x.data.Fault && x.data.Fault.Error && x.data.Fault.Error.length) ||
+                    (_.isString(x.data) && !_.isEmpty(x.data) && x.data.indexOf('<') === 0)) {
+                    callback(x.data, x.data, x)
+                } else {
+                    callback(null, x.data, x)
+                }
+            }
+        }).catch(err => {
+            console.log(JSON.stringify(err, null, 2));
+            callback(err, err, err);
+        });
+        /*
         request[verb].call(this, opts, (err, res, body) => {
             if ('production' !== process.env.NODE_ENV && this.debug) {
                 console.log('invoking endpoint: ' + url)
@@ -268,6 +298,8 @@ export class Quickbooks {
                 }
             }
         })
+        */
+
     }
 
     private xmlRequest(url: string, rootTag: string, callback) {
