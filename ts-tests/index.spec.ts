@@ -1,10 +1,10 @@
 import { expect } from "chai"
 import config from '../config';
-import {Quickbooks} from "../src";
+import {QuickBooks} from "../src";
 
 describe("Initialization", () => {
     it("can create Quickbooks object", () => {
-        const qb = new Quickbooks(config);
+        const qb = new QuickBooks(config);
         expect(qb).to.not.be.null;
     })
 })
@@ -12,7 +12,7 @@ describe("Initialization", () => {
 describe("CRUD API", () => {
     describe("INVOICES", () => {
         it('can create invoice with promise api', async (done) => {
-            const qb = new Quickbooks(config);
+            const qb = new QuickBooks(config);
             const minimalInvoice = {
                 CustomerRef: {
                     value: "1"
@@ -36,7 +36,7 @@ describe("CRUD API", () => {
 
         });
         it('can create invoice with callback api', (done) => {
-            const qb = new Quickbooks(config);
+            const qb = new QuickBooks(config);
             const minimalInvoice = {
                 CustomerRef: {
                     value: "1"
