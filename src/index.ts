@@ -662,12 +662,729 @@ export class QuickBooks {
      * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent Account.
      */
     public getAccount (id: string, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.read( 'account', id), callback);
+    }
+    /**
+     * Retrieves the Attachable in QuickBooks
+     *
+     * @param  {string} id - The ID of the persistent Attachable
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent Attachable
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent Attachable.
+     */
+    public getAttachable (id: string, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.read( 'attachable', id), callback);
+    }
+    /**
+     * Retrieves the Bill in QuickBooks
+     *
+     * @param  {string} id - The ID of the persistent Bill
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent Bill
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent Bill.
+     */
+    public getBill (id: string, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.read( 'bill', id), callback);
+    }
+    /**
+     * Retrieves the BillPayment in QuickBooks
+     *
+     * @param  {string} id - The ID of the persistent BillPayment
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent BillPayment
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent BillPayment.
+     */
+    public getBillPayment (id: string, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.read( 'billPayment', id), callback);
+    }
+    /**
+     * Retrieves the Class in QuickBooks
+     *
+     * @param  {string} id - The ID of the persistent Class
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent Class
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent Class.
+     */
+    public getClass (id: string, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.read( 'class', id), callback);
+    }
+    /**
+     * Retrieves the CompanyInfo in QuickBooks
+     *
+     * @param  {string} id - The ID of the persistent CompanyInfo
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent CompanyInfo
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent CompanyInfo.
+     */
+    public getCompanyInfo (id: string, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.read( 'companyInfo', id), callback);
+    }
+    /**
+     * Retrieves the CustomerType in QuickBooks
+     *
+     * @param  {string} id - The ID of the persistent CustomerType
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent CustomerType
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent CustomerType.
+     */
+    public getCustomerType (id: string, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.read( 'customerType', id), callback);
+    }
+    /**
+     * Retrieves the Department in QuickBooks
+     *
+     * @param  {string} id - The ID of the persistent Department
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent Department
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent Department.
+     */
+    public getDepartment (id: string, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.read( 'department', id), callback);
+    }
+    /**
+     * Retrieves the Deposit in QuickBooks
+     *
+     * @param  {string} id - The ID of the persistent Deposit
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent Deposit
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent Deposit.
+     */
+    public getDeposit (id: string, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.read( 'deposit', id), callback);
+    }
+    /**
+     * Retrieves the Employee in QuickBooks
+     *
+     * @param  {string} id - The ID of the persistent Employee
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent Employee
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent Employee.
+     */
+    public getEmployee (id: string, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.read( 'employee', id), callback);
+    }
+    /**
+     * Retrieves the Estimate in QuickBooks
+     *
+     * @param  {string} id - The ID of the persistent Estimate
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent Estimate
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent Estimate.
+     */
+    public getEstimate (id: string, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.read( 'employee', id), callback);
+    }
+    /**
+     * Retrieves the ExchangeRate in QuickBooks
+     *
+     * @param  {object} options - An object with options including the required `sourcecurrencycode` parameter and optional `asofdate` parameter.
+     * @param  {function} callback - Optional Callback function which is called with any error and the ExchangeRate
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the ExchangeRate.
+     */
+    public getExchangeRate (options: any, callback?: (err, data) => void): Promise<any>|void {
+        const url = "/exchangerate";
+        return this.wrapPromiseWithOptionalCallback(this.request( 'get', {url: url, qs: options}, null), callback);
+    }
+    /**
+     * Retrieves the Estimate PDF in QuickBooks
+     *
+     * @param  {string} id - The ID of the persistent Estimate
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent Estimate PDF
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent Estimate PDF.
+     */
+    public getEstimatePdf (id: string, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.read( 'estimate', id + '/pdf'), callback);
+    }
+    /**
+     * Emails the Estimate PDF from QuickBooks to the address supplied in Estimate.BillEmail.EmailAddress
+     *  or the specified 'sendTo' address
+     *
+     * @param  {string} id - The ID of the persistent Estimate
+     * @param {string} sendTo - optional email address to send the PDF to. If not provided, address supplied in Estimate.BillEmail.EmailAddress will be used
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent Estimate PDF
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent Estimate PDF.
+     */
+    public sendEstimatePdf (id: string, sendTo?: string|((err, data) => void) ,callback?: (err, data) => void): Promise<any>|void {
+        let path = `/estimate/${id}/send`;
+        callback = typeof sendTo !== 'string' ? sendTo: callback;
+        if(sendTo && typeof sendTo === 'string') {
+            path += '?sendTo=' + sendTo;
+        }
+        return this.wrapPromiseWithOptionalCallback(this.unwrapPromise(this.request( 'post', {url: path}, null), 'Estimate'), callback);
+    }
+    /**
+     * Retrieves the Invoice in QuickBooks
+     *
+     * @param  {string} id - The ID of the persistent Invoice
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent Invoice
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent Invoice.
+     */
+    public getInvoice (id: string, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.read( 'invoice', id), callback);
+    }
+    /**
+     * Retrieves the Invoice PDF in QuickBooks
+     *
+     * @param  {string} id - The ID of the persistent Invoice
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent Invoice PDF
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent Invoice PDF.
+     */
+    public getInvoicePdf (id: string, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.read( 'invoice', id + '/pdf'), callback);
+    }
+    /**
+     * Emails the Invoice PDF from QuickBooks to the address supplied in Estimate.BillEmail.EmailAddress
+     *  or the specified 'sendTo' address
+     *
+     * @param  {string} id - The ID of the persistent Invoice
+     * @param {string} sendTo - optional email address to send the PDF to. If not provided, address supplied in Invoice.BillEmail.EmailAddress will be used
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent Invoice PDF
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent Invoice PDF.
+     */
+    public sendInvoicePdf (id: string, sendTo?: string|((err, data) => void) ,callback?: (err, data) => void): Promise<any>|void {
+        let path = `/invoice/${id}/send`;
+        callback = typeof sendTo !== 'string' ? sendTo: callback;
+        if(sendTo && typeof sendTo === 'string') {
+            path += '?sendTo=' + sendTo;
+        }
+        return this.wrapPromiseWithOptionalCallback(this.unwrapPromise(this.request( 'post', {url: path}, null), 'Invoice'), callback);
+    }
+    /**
+     * Emails the Purchase Order from QuickBooks to the address supplied in PurchaseOrder.POEmail.EmailAddress
+     *  or the specified 'sendTo' address
+     *
+     * @param  {string} id - The ID of the persistent Purchase Order
+     * @param {string} sendTo - optional email address to send the PDF to. If not provided, address supplied in PurchaseOrder.POEmail.EmailAddress will be used
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent Purchase Order PDF
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent Purchase Order PDF.
+     */
+    public sendPurchaseOrder (id: string, sendTo?: string|((err, data) => void) ,callback?: (err, data) => void): Promise<any>|void {
+        let path = `/purchaseorder/${id}/send`;
+        callback = typeof sendTo !== 'string' ? sendTo: callback;
+        if(sendTo && typeof sendTo === 'string') {
+            path += '?sendTo=' + sendTo;
+        }
+        return this.wrapPromiseWithOptionalCallback(this.unwrapPromise(this.request( 'post', {url: path}, null), 'PurchaseOrder'), callback);
+    }
+    /**
+     * Retrieves the Item in QuickBooks
+     *
+     * @param  {string} id - The ID of the persistent Item
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent Item
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent Item.
+     */
+    public getItem (id: string, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.read( 'item', id), callback);
+    }
+    /**
+     * Retrieves the JournalCode in QuickBooks
+     *
+     * @param  {string} id - The ID of the persistent JournalCode
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent JournalCode
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent JournalCode.
+     */
+    public getJournalCode (id: string, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.read( 'journalCode', id), callback);
+    }
+    /**
+     * Retrieves the JournalEntry in QuickBooks
+     *
+     * @param  {string} id - The ID of the persistent JournalEntry
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent JournalEntry
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent JournalEntry.
+     */
+    public getJournalEntry (id: string, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.read( 'journalEntry', id), callback);
+    }
+    /**
+     * Retrieves the Payment in QuickBooks
+     *
+     * @param  {string} id - The ID of the persistent Payment
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent Payment
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent Payment.
+     */
+    public getPayment (id: string, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.read( 'payment', id), callback);
+    }
+    /**
+     * Retrieves the PaymentMethod in QuickBooks
+     *
+     * @param  {string} id - The ID of the persistent PaymentMethod
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent PaymentMethod
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent PaymentMethod.
+     */
+    public getPaymentMethod (id: string, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.read( 'paymentMethod', id), callback);
+    }
+    /**
+     * Retrieves the Preferences in QuickBooks
+     *
+     *
+     * @param  {function} callback - Optional Callback function which is called with any error and the Preferences
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the Preferences.
+     */
+    public getPreferences (callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.read( 'preferences', null), callback);
+    }
+    /**
+     * Retrieves the Purchase in QuickBooks
+     *
+     * @param  {string} id - The ID of the persistent Purchase
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent Purchase
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent Purchase.
+     */
+    public getPurchase (id: string, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.read( 'purchase', id), callback);
+    }
+    /**
+     * Retrieves the PurchaseOrder in QuickBooks
+     *
+     * @param  {string} id - The ID of the persistent Purchase
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent Purchase
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent Purchase.
+     */
+    public getPurchaseOrder (id: string, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.read( 'purchase', id), callback);
+    }
+    /**
+     * Retrieves the RefundReceipt in QuickBooks
+     *
+     * @param  {string} id - The ID of the persistent RefundReceipt
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent RefundReceipt
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent RefundReceipt.
+     */
+    public getRefundReceipt (id: string, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.read( 'refundReceipt', id), callback);
+    }
+    /**
+     * Retrieves the Reports in QuickBooks
+     *
+     * @param  {string} id - The ID of the persistent Reports
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent Reports
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent Reports.
+     */
+    public getReports (id: string, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.read( 'reports', id), callback);
+    }
+    /**
+     * Retrieves the SalesReceipt in QuickBooks
+     *
+     * @param  {string} id - The ID of the persistent SalesReceipt
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent SalesReceipt
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent SalesReceipt.
+     */
+    public getSalesReceipt (id: string, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.read( 'salesReceipt', id), callback);
+    }
+    /**
+     * Retrieves the SalesReceipt PDF in QuickBooks
+     *
+     * @param  {string} id - The ID of the persistent SalesReceipt
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent SalesReceipt PDF
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent SalesReceipt PDF.
+     */
+    public getSalesReceiptPdf (id: string, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.read( 'salesReceipt', id + '/pdf'), callback);
+    }
+    /**
+     * Emails the SalesReceipt PDF from QuickBooks to the address supplied in SalesReceipt.BillEmail.EmailAddress
+     *  or the specified 'sendTo' address
+     *
+     * @param  {string} id - The ID of the persistent SalesReceipt
+     * @param {string} sendTo - optional email address to send the PDF to. If not provided, address supplied in SalesReceipt.BillEmail.EmailAddress will be used
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent SalesReceipt PDF
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent SalesReceipt PDF.
+     */
+    public sendSalesReceiptPdf (id: string, sendTo?: string|((err, data) => void) ,callback?: (err, data) => void): Promise<any>|void {
+        let path = `/salesReceipt/${id}/send`;
+        callback = typeof sendTo !== 'string' ? sendTo: callback;
+        if(sendTo && typeof sendTo === 'string') {
+            path += '?sendTo=' + sendTo;
+        }
+        return this.wrapPromiseWithOptionalCallback(this.unwrapPromise(this.request( 'post', {url: path}, null), 'SalesReceipt'), callback);
+    }
+    /**
+     * Retrieves the TaxAgency in QuickBooks
+     *
+     * @param  {string} id - The ID of the persistent TaxAgency
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent TaxAgency
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent TaxAgency.
+     */
+    public getTaxAgency (id: string, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.read( 'taxAgency', id), callback);
+    }
+    /**
+     * Retrieves the TaxCode in QuickBooks
+     *
+     * @param  {string} id - The ID of the persistent TaxCode
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent TaxCode
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent TaxCode.
+     */
+    public getTaxCode (id: string, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.read( 'taxCode', id), callback);
+    }
+    /**
+     * Retrieves the TaxRate in QuickBooks
+     *
+     * @param  {string} id - The ID of the persistent TaxRate
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent TaxRate
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent TaxRate.
+     */
+    public getTaxRate (id: string, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.read( 'taxRate', id), callback);
+    }
+    /**
+     * Retrieves the Term in QuickBooks
+     *
+     * @param  {string} id - The ID of the persistent Term
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent Term
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent Term.
+     */
+    public getTerm (id: string, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.read( 'taxRate', id), callback);
+    }
+    /**
+     * Retrieves the TimeActivity in QuickBooks
+     *
+     * @param  {string} id - The ID of the persistent TimeActivity
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent TimeActivity
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent TimeActivity.
+     */
+    public getTimeActivity (id: string, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.read( 'taxRate', id), callback);
+    }
+    /**
+     * Retrieves the Transfer in QuickBooks
+     *
+     * @param  {string} id - The ID of the persistent Transfer
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent Transfer
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent Transfer.
+     */
+    public getTransfer (id: string, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.read( 'transfer', id), callback);
+    }
+    /**
+     * Retrieves the Vendor in QuickBooks
+     *
+     * @param  {string} id - The ID of the persistent Vendor
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent Vendor
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent Vendor.
+     */
+    public getVendor (id: string, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.read( 'vendor', id), callback);
+    }
+    /**
+     * Retrieves the VendorCredit in QuickBooks
+     *
+     * @param  {string} id - The ID of the persistent VendorCredit
+     * @param  {function} callback - Optional Callback function which is called with any error and the persistent VendorCredit
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the persistent VendorCredit.
+     */
+    public getVendorCredit (id: string, callback?: (err, data) => void): Promise<any>|void {
         return this.wrapPromiseWithOptionalCallback(this.read( 'vendorCredit', id), callback);
     }
 
-
-
-
+    //UPDATE
+    /**
+     * Updates the Account in QuickBooks
+     *
+     * @param  {object} account - The Account to be updated. Must include ID and SyncToken fields.
+     * @param  {function} callback - Optional Callback function which is called with any error and the updated Account
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the updated Account.
+     */
+    public updateAccount (account: any, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.update( 'account', account), callback);
+    }
+    /**
+     * Updates the Attachable in QuickBooks
+     *
+     * @param  {object} attachable - The Attachable to be updated. Must include ID and SyncToken fields.
+     * @param  {function} callback - Optional Callback function which is called with any error and the updated Attachable
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the updated Attachable.
+     */
+    public updateAttachable (attachable: any, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.update( 'attachable', attachable), callback);
+    }
+    /**
+     * Updates the Bill in QuickBooks
+     *
+     * @param  {object} bill - The Bill to be updated. Must include ID and SyncToken fields.
+     * @param  {function} callback - Optional Callback function which is called with any error and the updated Bill
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the updated Bill.
+     */
+    public updateBill (bill: any, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.update( 'bill', bill), callback);
+    }
+    /**
+     * Updates the BillPayment in QuickBooks
+     *
+     * @param  {object} billPayment - The BillPayment to be updated. Must include ID and SyncToken fields.
+     * @param  {function} callback - Optional Callback function which is called with any error and the updated BillPayment
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the updated BillPayment.
+     */
+    public updateBillPayment (billPayment: any, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.update( 'billPayment', billPayment), callback);
+    }
+    /**
+     * Updates the Class in QuickBooks
+     *
+     * @param  {object} qbClass - The Class to be updated. Must include ID and SyncToken fields.
+     * @param  {function} callback - Optional Callback function which is called with any error and the updated Class
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the updated Class.
+     */
+    public updateClass (qbClass: any, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.update( 'class', qbClass), callback);
+    }
+    /**
+     * Updates the CompanyInfo in QuickBooks
+     *
+     * @param  {object} companyInfo - The CompanyInfo to be updated. Must include ID and SyncToken fields.
+     * @param  {function} callback - Optional Callback function which is called with any error and the updated CompanyInfo
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the updated CompanyInfo.
+     */
+    public updateCompanyInfo (companyInfo: any, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.update( 'companyInfo', companyInfo), callback);
+    }
+    /**
+     * Updates the CreditMemo in QuickBooks
+     *
+     * @param  {object} creditMemo - The CreditMemo to be updated. Must include ID and SyncToken fields.
+     * @param  {function} callback - Optional Callback function which is called with any error and the updated CreditMemo
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the updated CreditMemo.
+     */
+    public updateCreditMemo (creditMemo: any, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.update( 'creditMemo', creditMemo), callback);
+    }
+    /**
+     * Updates the Customer in QuickBooks
+     *
+     * @param  {object} customer - The Customer to be updated. Must include ID and SyncToken fields.
+     * @param  {function} callback - Optional Callback function which is called with any error and the updated Customer
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the updated Customer.
+     */
+    public updateCustomer (customer: any, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.update( 'customer', customer), callback);
+    }
+    /**
+     * Updates the Department in QuickBooks
+     *
+     * @param  {object} department - The Department to be updated. Must include ID and SyncToken fields.
+     * @param  {function} callback - Optional Callback function which is called with any error and the updated Department
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the updated Department.
+     */
+    public updateDepartment (department: any, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.update( 'department', department), callback);
+    }
+    /**
+     * Updates the Deposit in QuickBooks
+     *
+     * @param  {object} deposit - The Deposit to be updated. Must include ID and SyncToken fields.
+     * @param  {function} callback - Optional Callback function which is called with any error and the updated Deposit
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the updated Deposit.
+     */
+    public updateDeposit (deposit: any, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.update( 'deposit', deposit), callback);
+    }
+    /**
+     * Updates the Employee in QuickBooks
+     *
+     * @param  {object} employee - The Employee to be updated. Must include ID and SyncToken fields.
+     * @param  {function} callback - Optional Callback function which is called with any error and the updated Employee
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the updated Employee.
+     */
+    public updateEmployee (employee: any, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.update( 'employee', employee), callback);
+    }
+    /**
+     * Updates the Estimate in QuickBooks
+     *
+     * @param  {object} estimate - The Estimate to be updated. Must include ID and SyncToken fields.
+     * @param  {function} callback - Optional Callback function which is called with any error and the updated Estimate
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the updated Estimate.
+     */
+    public updateEstimate (estimate: any, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.update( 'estimate', estimate), callback);
+    }
+    /**
+     * Updates the Invoice in QuickBooks
+     *
+     * @param  {object} invoice - The Invoice to be updated. Must include ID and SyncToken fields.
+     * @param  {function} callback - Optional Callback function which is called with any error and the updated Invoice
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the updated Invoice.
+     */
+    public updateInvoice (invoice: any, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.update( 'invoice', invoice), callback);
+    }
+    /**
+     * Updates the Item in QuickBooks
+     *
+     * @param  {object} item - The Item to be updated. Must include ID and SyncToken fields.
+     * @param  {function} callback - Optional Callback function which is called with any error and the updated Item
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the updated Item.
+     */
+    public updateItem (item: any, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.update( 'item', item), callback);
+    }
+    /**
+     * Updates the JournalCode in QuickBooks
+     *
+     * @param  {object} journalCode - The JournalCode to be updated. Must include ID and SyncToken fields.
+     * @param  {function} callback - Optional Callback function which is called with any error and the updated JournalCode
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the updated JournalCode.
+     */
+    public updateJournalCode (journalCode: any, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.update( 'journalCode', journalCode), callback);
+    }
+    /**
+     * Updates the JournalEntry in QuickBooks
+     *
+     * @param  {object} journalEntry - The JournalCode to be updated. Must include ID and SyncToken fields.
+     * @param  {function} callback - Optional Callback function which is called with any error and the updated JournalEntry
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the updated JournalEntry.
+     */
+    public updateJournalEntry (journalEntry: any, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.update( 'journalEntry', journalEntry), callback);
+    }
+    /**
+     * Updates the Payment in QuickBooks
+     *
+     * @param  {object} payment - The Payment to be updated. Must include ID and SyncToken fields.
+     * @param  {function} callback - Optional Callback function which is called with any error and the updated Payment
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the updated Payment.
+     */
+    public updatePayment (payment: any, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.update( 'payment', payment), callback);
+    }
+    /**
+     * Updates the PaymentMethod in QuickBooks
+     *
+     * @param  {object} paymentMethod - The PaymentMethod to be updated. Must include ID and SyncToken fields.
+     * @param  {function} callback - Optional Callback function which is called with any error and the updated PaymentMethod
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the updated PaymentMethod.
+     */
+    public updatePaymentMethod (paymentMethod: any, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.update( 'paymentMethod', paymentMethod), callback);
+    }
+    /**
+     * Updates the Purchase in QuickBooks
+     *
+     * @param  {object} purchase - The Purchase to be updated. Must include ID and SyncToken fields.
+     * @param  {function} callback - Optional Callback function which is called with any error and the updated Purchase
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the updated Purchase.
+     */
+    public updatePurchase (purchase: any, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.update( 'purchase', purchase), callback);
+    }
+    /**
+     * Updates the PurchaseOrder in QuickBooks
+     *
+     * @param  {object} purchaseOrder - The PurchaseOrder to be updated. Must include ID and SyncToken fields.
+     * @param  {function} callback - Optional Callback function which is called with any error and the updated PurchaseOrder
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the updated PurchaseOrder.
+     */
+    public updatePurchaseOrder (purchaseOrder: any, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.update( 'purchaseOrder', purchaseOrder), callback);
+    }
+    /**
+     * Updates the RefundReceipt in QuickBooks
+     *
+     * @param  {object} refundReceipt - The RefundReceipt to be updated. Must include ID and SyncToken fields.
+     * @param  {function} callback - Optional Callback function which is called with any error and the updated RefundReceipt
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the updated RefundReceipt.
+     */
+    public updateRefundReceipt (refundReceipt: any, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.update( 'refundReceipt', refundReceipt), callback);
+    }
+    /**
+     * Updates the SalesReceipt in QuickBooks
+     *
+     * @param  {object} salesReceipt - The SalesReceipt to be updated. Must include ID and SyncToken fields.
+     * @param  {function} callback - Optional Callback function which is called with any error and the updated SalesReceipt
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the updated SalesReceipt.
+     */
+    public updateSalesReceipt (salesReceipt: any, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.update( 'salesReceipt', salesReceipt), callback);
+    }
+    /**
+     * Updates the TaxAgency in QuickBooks
+     *
+     * @param  {object} taxAgency - The TaxAgency to be updated. Must include ID and SyncToken fields.
+     * @param  {function} callback - Optional Callback function which is called with any error and the updated TaxAgency
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the updated TaxAgency.
+     */
+    public updateTaxAgency (taxAgency: any, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.update( 'taxAgency', taxAgency), callback);
+    }
+    /**
+     * Updates the TaxCode in QuickBooks
+     *
+     * @param  {object} taxCode - The TaxCode to be updated. Must include ID and SyncToken fields.
+     * @param  {function} callback - Optional Callback function which is called with any error and the updated TaxCode
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the updated TaxCode.
+     */
+    public updateTaxCode (taxCode: any, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.update( 'taxCode', taxCode), callback);
+    }
+    /**
+     * Updates the TaxRate in QuickBooks
+     *
+     * @param  {object} taxRate - The TaxRate to be updated. Must include ID and SyncToken fields.
+     * @param  {function} callback - Optional Callback function which is called with any error and the updated TaxRate
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the updated TaxRate.
+     */
+    public updateTaxRate (taxRate: any, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.update( 'taxRate', taxRate), callback);
+    }
+    /**
+     * Updates the Term in QuickBooks
+     *
+     * @param  {object} term - The Term to be updated. Must include ID and SyncToken fields.
+     * @param  {function} callback - Optional Callback function which is called with any error and the updated Term
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the updated Term.
+     */
+    public updateTerm (term: any, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.update( 'term', term), callback);
+    }
+    /**
+     * Updates the TimeActivity in QuickBooks
+     *
+     * @param  {object} timeActivity - The TimeActivity to be updated. Must include ID and SyncToken fields.
+     * @param  {function} callback - Optional Callback function which is called with any error and the updated TimeActivity
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the updated TimeActivity.
+     */
+    public updateTimeActivity (timeActivity: any, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.update( 'timeActivity', timeActivity), callback);
+    }
+    /**
+     * Updates the Transfer in QuickBooks
+     *
+     * @param  {object} transfer - The Transfer to be updated. Must include ID and SyncToken fields.
+     * @param  {function} callback - Optional Callback function which is called with any error and the updated Transfer
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the updated Transfer.
+     */
+    public updateTransfer (transfer: any, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.update( 'transfer', transfer), callback);
+    }
+    /**
+     * Updates the Vendor in QuickBooks
+     *
+     * @param  {object} vendor - The Vendor to be updated. Must include ID and SyncToken fields.
+     * @param  {function} callback - Optional Callback function which is called with any error and the updated Vendor
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the updated Vendor.
+     */
+    public updateVendor (vendor: any, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.update( 'vendor', vendor), callback);
+    }
+    /**
+     * Updates the VendorCredit in QuickBooks
+     *
+     * @param  {object} vendorCredit - The VendorCredit to be updated. Must include ID and SyncToken fields.
+     * @param  {function} callback - Optional Callback function which is called with any error and the updated VendorCredit
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the updated VendorCredit.
+     */
+    public updateVendorCredit (vendorCredit: any, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.update( 'vendorCredit', vendorCredit), callback);
+    }
+    /**
+     * Updates the ExchangeRate in QuickBooks
+     *
+     * @param  {object} exchangeRate - The ExchangeRate to be updated. Must include ID and SyncToken fields.
+     * @param  {function} callback - Optional Callback function which is called with any error and the updated ExchangeRate
+     * @return Promise|void If callback is supplied, uses the callback and returns void. Otherwise returns a promise containing the updated ExchangeRate.
+     */
+    public updateExchangeRate (exchangeRate: any, callback?: (err, data) => void): Promise<any>|void {
+        return this.wrapPromiseWithOptionalCallback(this.update( 'exchangeRate', exchangeRate), callback);
+    }
 
     /**
      * Wraps a Promise with an optional callback or returns the original promise if no callback supplied.
@@ -829,6 +1546,18 @@ export class QuickBooks {
     }
 
     /**
+     * Unwraps QBO Response object from Promise
+     *
+     * @param data -  Promise returning QBO Response object
+     * @param entityName - Name of QBO Entity contained in the Response Object
+     * @return Promise
+     * @private
+     */
+    private async unwrapPromise(data: Promise<any>, entityName: string): Promise<any> {
+        const val = await data;
+        return this.unwrap(val, entityName);
+    }
+    /**
      * Unwraps QBO response object
      *
      * @param data - QBO Response object to unwrap.
@@ -887,11 +1616,11 @@ export class QuickBooks {
      * Generic Read function. Used to read Quickbooks Entities.
      *
      * @param entityName - Name of Entity to read, ex: Invoice
-     * @param id - the string ID of the entity to read.
+     * @param id - the string ID of the entity to read. Pass in null for items that do not have an ID, like Preferences.
      * @return Promise A promise containing the retrieved entity.
      * @private
      */
-    private async read(entityName: string, id: string) {
+    private async read(entityName: string, id: string|null) {
         let url = '/' + entityName.toLowerCase()
         if (id) url = url + '/' + id
         const data = await this.request( 'get', {url: url}, null);
